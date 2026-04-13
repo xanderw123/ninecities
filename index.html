@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nine Cities - Andantis</title>
+    <title>Nine Cities</title>
     <link href="https://fonts.googleapis.com/css2?family=VT323&family=Krungthep&display=swap" rel="stylesheet">
     <style>
         * {
@@ -16,112 +16,49 @@
             background: #000;
             color: #fff;
             font-family: 'VT323', monospace;
-            overflow: hidden;
-            width: 100vw;
-            height: 100vh;
-        }
-
-        #game-container {
-            width: 100vw;
-            height: 100vh;
-            position: relative;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            min-height: 100vh;
+            padding: 40px 20px;
         }
 
-        .scene {
-            position: absolute;
+        .container {
+            max-width: 900px;
             width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 0.8s ease-in-out;
             display: flex;
+            flex-direction: column;
             align-items: center;
+            gap: 40px;
+        }
+
+        .video-wrapper {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            display: flex;
             justify-content: center;
+            align-items: center;
         }
 
-        .scene.active {
-            opacity: 1;
-            z-index: 10;
-        }
-
-        .scene-background {
-            position: absolute;
+        iframe {
             width: 100%;
             height: 100%;
-            background-size: cover;
-            background-position: center;
-            top: 0;
-            left: 0;
+            max-width: 560px;
+            max-height: 315px;
         }
 
-        .scene-content {
-            position: relative;
-            z-index: 20;
-            text-align: center;
-            max-width: 90%;
-            padding: 60px;
-            animation: fadeIn 1s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .text-line {
-            font-size: 18px;
-            line-height: 2.5;
-            letter-spacing: 2px;
-            margin: 10px 0;
-            animation: lineAppear 0.8s ease-in forwards;
-            opacity: 0;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 
-                         0 0 20px rgba(0, 0, 0, 0.6);
-        }
-
-        @keyframes lineAppear {
-            from {
-                opacity: 0;
-                transform: translateY(5px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .button-container {
+        .button-wrapper {
             display: flex;
-            flex-wrap: wrap;
             justify-content: center;
-            gap: 20px;
-            margin-top: 40px;
-            animation: buttonsAppear 1.2s ease-in forwards;
-            opacity: 0;
-        }
-
-        @keyframes buttonsAppear {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+            width: 100%;
         }
 
         .xw-button {
             border: 3px solid #fff;
             background: #000;
             color: #fff;
-            padding: 16px 32px;
+            padding: 16px 48px;
             font-family: 'VT323', monospace;
             font-size: 16px;
             letter-spacing: 2px;
@@ -130,7 +67,6 @@
             text-decoration: none;
             display: inline-block;
             text-transform: uppercase;
-            min-width: 200px;
         }
 
         .xw-button:hover {
@@ -143,58 +79,34 @@
             transform: scale(0.98);
         }
 
-        .xw-button.payment {
-            border-color: #ff00ff;
-            color: #ff00ff;
+        .status-text {
+            font-size: 24px;
+            letter-spacing: 2px;
+            text-align: center;
+            margin-top: 20px;
         }
 
-        .xw-button.payment:hover {
-            background: #ff00ff;
-            color: #000;
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.8);
+        .disclaimer {
+            font-size: 12px;
+            color: #666;
+            text-align: center;
+            margin-top: 20px;
+            letter-spacing: 1px;
         }
 
-        .xw-button.secondary {
-            border-color: #00ffff;
-            color: #00ffff;
-        }
-
-        .xw-button.secondary:hover {
-            background: #00ffff;
-            color: #000;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.8);
-        }
-
-        #audio-player {
+        footer {
             position: fixed;
             bottom: 20px;
-            right: 20px;
-            z-index: 100;
-            opacity: 0.7;
-            transition: opacity 0.3s;
-        }
-
-        #audio-player:hover {
-            opacity: 1;
-        }
-
-        .title {
-            font-family: 'Krungthep', sans-serif;
-            font-size: 48px;
-            letter-spacing: 4px;
-            margin-bottom: 40px;
-            text-transform: uppercase;
-        }
-
-        .subtitle {
-            font-size: 20px;
-            letter-spacing: 3px;
-            margin-bottom: 30px;
-            color: #aaa;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: #333;
+            text-align: center;
+            letter-spacing: 1px;
         }
 
         /* CRT scan lines effect */
-        #game-container::before {
+        body::before {
             content: '';
             position: fixed;
             top: 0;
@@ -212,297 +124,39 @@
             z-index: 9999;
         }
 
-        .item-content {
-            max-width: 800px;
-            text-align: left;
-            line-height: 2;
-        }
+        @media (max-width: 768px) {
+            iframe {
+                max-width: 100%;
+                max-height: 100%;
+            }
 
-        .item-content h2 {
-            font-size: 24px;
-            margin: 30px 0 20px 0;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+            .status-text {
+                font-size: 18px;
+            }
 
-        .item-content p {
-            font-size: 16px;
-            margin: 15px 0;
-            line-height: 2;
-        }
-
-        .no-money-response {
-            max-width: 700px;
-            line-height: 2.5;
-            font-size: 18px;
+            body {
+                padding: 20px 10px;
+            }
         }
     </style>
 </head>
 <body>
-    <div id="game-container">
-        <!-- SCENE 1: STREETVIEW -->
-        <div class="scene active" id="scene-streetview">
-            <div class="scene-background" style="background-image: url('streetview.jpg');"></div>
-            <div class="scene-content">
-                <div class="text-line" style="animation-delay: 0.2s;">It seems almost cold….</div>
-                <div class="text-line" style="animation-delay: 0.4s;">But..</div>
-                <div class="text-line" style="animation-delay: 0.6s;">You don't feel a thing.</div>
-                <div class="text-line" style="animation-delay: 0.8s;">Everything is moving so slow.</div>
-                <div class="text-line" style="animation-delay: 1.0s;">Its disorienting</div>
-                <div class="text-line" style="animation-delay: 1.2s;">Its poetic</div>
-                <div class="text-line" style="animation-delay: 1.4s;">It feels so real, yet not at all.</div>
-                <div class="text-line" style="animation-delay: 1.6s;">Its kind of incredible, but you also notice a sort of queasiness</div>
-                <div class="text-line" style="animation-delay: 1.8s;">The sickness increases more and more as you realize how much larger this is than you originally thought.</div>
-                <div class="text-line" style="animation-delay: 2.0s;">Almost as if the city is downloading into your subconscious..</div>
-                <div class="text-line" style="animation-delay: 2.2s;">Must.. Get.. To a smaller.. space…</div>
-                
-                <div class="button-container" style="animation-delay: 2.6s;">
-                    <button class="xw-button" onclick="switchScene('scene-salesman')">LEFT ALLEY</button>
-                    <button class="xw-button" onclick="switchScene('scene-civilian')">RIGHT ALLEY</button>
-                </div>
-            </div>
+    <div class="container">
+        <div class="video-wrapper">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/Ls-IoakTrYE?si=aW_FcsvO7gEn-QbS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
 
-        <!-- SCENE 2: SALESMAN -->
-        <div class="scene" id="scene-salesman">
-            <div class="scene-background" style="background-image: url('salesman.png');"></div>
-            <div class="scene-content">
-                <div class="text-line" style="animation-delay: 0.2s;">"Hello there, you're a quick one."</div>
-                <div class="text-line" style="animation-delay: 0.4s;">"You must be new here."</div>
-                <div class="text-line" style="animation-delay: 0.6s;">"Welcome to Andantis."</div>
-                <div class="text-line" style="animation-delay: 0.8s;">"Our Beloved Mayor built this city on an infrastructure of data."</div>
-                <div class="text-line" style="animation-delay: 1.0s;">"This worked incredibly well, as we grew beyond our wildest imaginations."</div>
-                <div class="text-line" style="animation-delay: 1.2s;">"Until the day came that the data centers unfortunately couldn't handle it anymore."</div>
-                <div class="text-line" style="animation-delay: 1.4s;">"One day, everything felt a little bit slower than normal."</div>
-                <div class="text-line" style="animation-delay: 1.6s;">"We expected it to get back to normal quickly. Then it just… didn't."</div>
-                <div class="text-line" style="animation-delay: 1.8s;">"Everything here is on a lag. Everything moves at a snail's pace."</div>
-                <div class="text-line" style="animation-delay: 2.0s;">"And if you stay here for long, you'll end up moving slow too. Forever…"</div>
-                <div class="text-line" style="animation-delay: 2.2s;">"Our sister city is nearby, powered by giant high powered steel machines."</div>
-                <div class="text-line" style="animation-delay: 2.4s;">"Everything there is quite the opposite of Andantis, fast and frenzied."</div>
-                <div class="text-line" style="animation-delay: 2.6s;">"I would honestly encourage you to head that way."</div>
-                <div class="text-line" style="animation-delay: 2.8s;">"But who knows, maybe you could be the one that makes it to the Ninth!"</div>
-                <div class="text-line" style="animation-delay: 3.0s;">"I do have a few items for sale that may help in your travels."</div>
-                <div class="text-line" style="animation-delay: 3.2s;">"So… Ya buying anything?"</div>
-                
-                <div class="button-container" style="animation-delay: 3.6s;">
-                    <button class="xw-button payment" onclick="switchScene('scene-newspaper-payment')">NEWSPAPER - $2.50</button>
-                    <button class="xw-button payment" onclick="switchScene('scene-map-payment')">MAP - $5</button>
-                    <button class="xw-button payment" onclick="switchScene('scene-mystery-payment')">MYSTERY - $10</button>
-                    <button class="xw-button secondary" onclick="switchScene('scene-no-money')">NO MONEY</button>
-                </div>
-            </div>
+        <div class="button-wrapper">
+            <a href="https://ninecities.net/andantis" class="xw-button">PLAY DEMO</a>
         </div>
 
-        <!-- SCENE 3: CIVILIAN -->
-        <div class="scene" id="scene-civilian">
-            <div class="scene-background" style="background-image: url('civilian.png');"></div>
-            <div class="scene-content">
-                <div class="text-line" style="animation-delay: 0.2s;">"Hey, speed freak, you're freaking me out, man!"</div>
-                <div class="text-line" style="animation-delay: 0.4s;">"I got anxiety!"</div>
-                <div class="text-line" style="animation-delay: 0.6s;">"I grew up near a bunch of high horsepower machines!"</div>
-                <div class="text-line" style="animation-delay: 0.8s;">"Right in the heart of The Iron Drone!"</div>
-                <div class="text-line" style="animation-delay: 1.0s;">"I got out of there as soon as I could!"</div>
-                <div class="text-line" style="animation-delay: 1.2s;">"Andantis is like a sanctuary for me."</div>
-                <div class="text-line" style="animation-delay: 1.4s;">…</div>
-                <div class="text-line" style="animation-delay: 1.6s;">"I'm sorry. I shouldn't have gotten onto you like that."</div>
-                <div class="text-line" style="animation-delay: 1.8s;">"Maybe you're a refugee too."</div>
-                <div class="text-line" style="animation-delay: 2.0s;">"It took me months to get over the adjustment sickness."</div>
-                <div class="text-line" style="animation-delay: 2.2s;">"I'll never be able make it to the Ninth."</div>
-                <div class="text-line" style="animation-delay: 2.4s;">"I just can't stand the thought of that place…"</div>
-                <div class="text-line" style="animation-delay: 2.6s;">"I can't even bring myself to say the name."</div>
-                <div class="text-line" style="animation-delay: 2.8s;">"In Japan, they named it 'Shunkan'."</div>
-                <div class="text-line" style="animation-delay: 3.0s;">"But the Europeans call it 'Actionloop'."</div>
-                <div class="text-line" style="animation-delay: 3.2s;">"Hey, I gotta go. Be safe out there."</div>
-                <div class="text-line" style="animation-delay: 3.4s;">"Get to the Ninth, will ya?"</div>
-                
-                <div class="button-container" style="animation-delay: 3.8s;">
-                    <button class="xw-button" onclick="switchScene('scene-end')">CONTINUE</button>
-                </div>
-            </div>
-        </div>
+        <div class="status-text">Full Version Coming Soon</div>
 
-        <!-- SCENE 4: NEWSPAPER PAYMENT -->
-        <div class="scene" id="scene-newspaper-payment">
-            <div class="scene-background" style="background-image: url('salesman.png');"></div>
-            <div class="scene-content">
-                <div class="text-line" style="animation-delay: 0.2s;">"Ah, the Newspaper Clipping. That'll be $2.50."</div>
-                
-                <div class="button-container" style="animation-delay: 0.6s;">
-                    <a href="https://buy.stripe.com/bJe14ogCCgo5eWP5HL0gw0" target="_blank" class="xw-button payment">PAY $2.50</a>
-                    <button class="xw-button secondary" onclick="switchScene('scene-salesman')">BACK</button>
-                </div>
-
-                <div class="text-line" style="animation-delay: 1.0s; margin-top: 40px;">Once you've paid, click below to see your item.</div>
-                <div class="button-container" style="animation-delay: 1.4s;">
-                    <button class="xw-button" onclick="switchScene('scene-newspaper')">I'VE PAID - SHOW ITEM</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- SCENE 5: MAP PAYMENT -->
-        <div class="scene" id="scene-map-payment">
-            <div class="scene-background" style="background-image: url('salesman.png');"></div>
-            <div class="scene-content">
-                <div class="text-line" style="animation-delay: 0.2s;">"The Map Fragment. That's $5."</div>
-                
-                <div class="button-container" style="animation-delay: 0.6s;">
-                    <a href="https://buy.stripe.com/5kQfZi7223Bj4ib6LP0gw01" target="_blank" class="xw-button payment">PAY $5</a>
-                    <button class="xw-button secondary" onclick="switchScene('scene-salesman')">BACK</button>
-                </div>
-
-                <div class="text-line" style="animation-delay: 1.0s; margin-top: 40px;">Once you've paid, click below to see your item.</div>
-                <div class="button-container" style="animation-delay: 1.4s;">
-                    <button class="xw-button" onclick="switchScene('scene-map')">I'VE PAID - SHOW ITEM</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- SCENE 6: MYSTERY PAYMENT -->
-        <div class="scene" id="scene-mystery-payment">
-            <div class="scene-background" style="background-image: url('salesman.png');"></div>
-            <div class="scene-content">
-                <div class="text-line" style="animation-delay: 0.2s;">"The Mystery Capsule. $10."</div>
-                
-                <div class="button-container" style="animation-delay: 0.6s;">
-                    <a href="https://buy.stripe.com/5kQ14o7228VD15Zeeh0gw02" target="_blank" class="xw-button payment">PAY $10</a>
-                    <button class="xw-button secondary" onclick="switchScene('scene-salesman')">BACK</button>
-                </div>
-
-                <div class="text-line" style="animation-delay: 1.0s; margin-top: 40px;">Once you've paid, click below to see your item.</div>
-                <div class="button-container" style="animation-delay: 1.4s;">
-                    <button class="xw-button" onclick="switchScene('scene-mystery')">I'VE PAID - SHOW ITEM</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- SCENE 7: NEWSPAPER ITEM -->
-        <div class="scene" id="scene-newspaper">
-            <div class="scene-background" style="background-image: url('salesman.png');"></div>
-            <div class="scene-content">
-                <div class="item-content">
-                    <div class="text-line" style="animation-delay: 0.2s;">The Salesman hands you a worn newspaper clipping.</div>
-                    
-                    <h2 style="animation-delay: 0.4s;">MAYOR BASTOW STILL MISSING</h2>
-                    
-                    <p style="animation-delay: 0.6s;">"It has been almost a year since we have seen or heard from Mayor Bastow. He was last seen near the XW Industries Building, his former employer in the 1990s. Many point to his enduring moral stance against The Flux-Torque Induction system, nicknamed The Iron Drone. As we all know, this is the system that runs the infrastructure of the nearby industrial city, Magneti…"</p>
-                    
-                    <p style="animation-delay: 0.8s;">The rest of the page is torn.</p>
-                    
-                    <p style="animation-delay: 1.0s;">"That'll be $2.50. Good luck out there."</p>
-                </div>
-                
-                <div class="button-container" style="animation-delay: 1.4s;">
-                    <button class="xw-button" onclick="switchScene('scene-end')">CONTINUE</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- SCENE 8: MAP ITEM -->
-        <div class="scene" id="scene-map">
-            <div class="scene-background" style="background-image: url('salesman.png');"></div>
-            <div class="scene-content">
-                <div class="item-content">
-                    <div class="text-line" style="animation-delay: 0.2s;">The Salesman unfolds a faded map.</div>
-                    
-                    <p style="animation-delay: 0.6s;">You see three cities marked:</p>
-                    <p style="animation-delay: 0.8s;">- ANDANTIS</p>
-                    <p style="animation-delay: 1.0s;">- MAGNETICA</p>
-                    <p style="animation-delay: 1.2s;">- LOGERRO</p>
-                    
-                    <p style="animation-delay: 1.6s;">The rest of the map is blank or faded beyond recognition.</p>
-                    
-                    <p style="animation-delay: 1.8s;">"Five dollars, friend. Fair price for knowing where you're going."</p>
-                </div>
-                
-                <div class="button-container" style="animation-delay: 2.2s;">
-                    <button class="xw-button" onclick="switchScene('scene-end')">CONTINUE</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- SCENE 9: MYSTERY ITEM -->
-        <div class="scene" id="scene-mystery">
-            <div class="scene-background" style="background-image: url('salesman.png');"></div>
-            <div class="scene-content">
-                <div class="item-content">
-                    <div class="text-line" style="animation-delay: 0.2s;">The Salesman places a small glowing capsule in your hand.</div>
-                    
-                    <p style="animation-delay: 0.6s;">It pulses with a faint light. On it, you can barely make out text that reads:</p>
-                    
-                    <p style="animation-delay: 1.0s;">"MAGNETICA ACCESS - CONFIRMED"</p>
-                    
-                    <p style="animation-delay: 1.4s;">"Ten dollars for that. It'll get you where you need to go, if you know what I mean."</p>
-                </div>
-                
-                <div class="button-container" style="animation-delay: 1.8s;">
-                    <button class="xw-button" onclick="switchScene('scene-end')">CONTINUE</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- SCENE 10: NO MONEY -->
-        <div class="scene" id="scene-no-money">
-            <div class="scene-background" style="background-image: url('salesman.png');"></div>
-            <div class="scene-content">
-                <div class="no-money-response">
-                    <div class="text-line" style="animation-delay: 0.2s;">"Oh no worries."</div>
-                    <div class="text-line" style="animation-delay: 0.4s;">"Hope I could help!"</div>
-                    <div class="text-line" style="animation-delay: 0.6s;">"Like I said, you won't need money anywhere else."</div>
-                    <div class="text-line" style="animation-delay: 0.8s;">"But it does help!"</div>
-                    <div class="text-line" style="animation-delay: 1.0s;">"I wish you good luck!"</div>
-                </div>
-                
-                <div class="button-container" style="animation-delay: 1.4s;">
-                    <button class="xw-button" onclick="switchScene('scene-end')">CONTINUE</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- SCENE 11: END -->
-        <div class="scene" id="scene-end">
-            <div class="scene-background" style="background-image: url('streetview.jpg');"></div>
-            <div class="scene-content">
-                <div class="text-line" style="animation-delay: 0.2s;">As beautiful as it is, and as welcoming as the people seem.</div>
-                <div class="text-line" style="animation-delay: 0.4s;">You probably shouldn't stay here.</div>
-                <div class="text-line" style="animation-delay: 0.6s;">The sickness will only worsen until you're stuck at their pace forever.</div>
-                <div class="text-line" style="animation-delay: 0.8s;">What was that second city's name?</div>
-                <div class="text-line" style="animation-delay: 1.0s;">The city stretches on.</div>
-                <div class="text-line" style="animation-delay: 1.2s;">Or maybe it loops back.</div>
-                <div class="text-line" style="animation-delay: 1.4s;">Everything moves slowly.</div>
-                <div class="text-line" style="animation-delay: 1.6s;">Maybe you should move faster.</div>
-                <div class="text-line" style="animation-delay: 1.8s;">Where would the next city be?</div>
-                
-                <div class="button-container" style="animation-delay: 2.2s;">
-                    <button class="xw-button" onclick="switchScene('scene-streetview')">RESTART</button>
-                </div>
-            </div>
-        </div>
+        <div class="disclaimer">Nine Cities is best experienced in Desktop view</div>
     </div>
 
-    <!-- AUDIO PLAYER (persistent) -->
-    <audio id="audio-player" controls loop>
-        <source src="https://t4.bcbits.com/stream/7e2c2a49b07c43cea4c72fdc9f2f0cac/mp3-128/5876869361-128-1712855293-nnstf9u1jq3j0zz" type="audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
-
-    <script>
-        function switchScene(sceneId) {
-            // Remove active class from all scenes
-            document.querySelectorAll('.scene').forEach(scene => {
-                scene.classList.remove('active');
-            });
-            
-            // Add active class to target scene
-            document.getElementById(sceneId).classList.add('active');
-            
-            // Scroll to top
-            window.scrollTo(0, 0);
-        }
-
-        // Prevent right-click (optional, adds to retro game feel)
-        document.addEventListener('contextmenu', (e) => {
-            e.preventDefault();
-        });
-    </script>
+    <footer>
+        © Nine Cities 2026. All Rights Reserved. Powered by XW Industries
+    </footer>
 </body>
 </html>
