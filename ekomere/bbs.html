@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekomere BBS - Nine Cities</title>
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1a4d6d 0%, #2d5a6f 100%);
+            color: #e8e8e8;
+            font-family: 'VT323', monospace;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* WELCOME IMAGE */
+        .welcome-image {
+            width: 100%;
+            margin-bottom: 30px;
+            border: 2px solid #4a7c9e;
+            border-radius: 4px;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        .welcome-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* AUDIO PLAYER */
+        .album-player {
+            background: rgba(20, 40, 60, 0.8);
+            border: 2px solid #4a7c9e;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .album-art {
+            margin-bottom: 20px;
+        }
+
+        .album-art img {
+            width: 100%;
+            max-width: 250px;
+            border: 3px solid #6eb5d6;
+            border-radius: 4px;
+            box-shadow: 0 0 20px rgba(110, 181, 214, 0.3);
+        }
+
+        .now-playing {
+            margin-bottom: 20px;
+        }
+
+        .track-title {
+            display: block;
+            font-size: 16px;
+            font-weight: bold;
+            color: #e8e8e8;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
+        }
+
+        .artist {
+            display: block;
+            font-size: 11px;
+            color: #8eb3d0;
+        }
+
+        .progress-bar {
+            position: relative;
+            width: 100%;
+            height: 6px;
+            background: rgba(70, 120, 150, 0.5);
+            border-radius: 3px;
+            margin: 15px 0;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #6eb5d6, #4a9cc9);
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        #progressSlider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .time-display {
+            font-size: 11px;
+            color: #8eb3d0;
+            margin: 10px 0;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .control-btn {
+            background: rgba(74, 124, 158, 0.6);
+            border: 2px solid #6eb5d6;
+            color: #e8e8e8;
+            padding: 10px 20px;
+            font-family: 'VT323', monospace;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .control-btn:hover {
+            background: #6eb5d6;
+            color: #000;
+            box-shadow: 0 0 15px rgba(110, 181, 214, 0.5);
+        }
+
+        .control-btn:active {
+            transform: scale(0.95);
+        }
+
+        .volume-control {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .volume-control label {
+            font-size: 11px;
+            color: #8eb3d0;
+        }
+
+        .volume-control input {
+            width: 100px;
+            cursor: pointer;
+        }
+
+        /* BBS CONTENT */
+        .bbs-container {
+            background: rgba(20, 40, 60, 0.8);
+            border: 2px solid #4a7c9e;
+            border-radius: 8px;
+            padding: 30px;
+        }
+
+        .bbs-title {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4a7c9e;
+        }
+
+        .bbs-title h1 {
+            font-size: 24px;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
+
+        .bbs-tagline {
+            font-style: italic;
+            color: #8eb3d0;
+            font-size: 12px;
+        }
+
+        .bbs-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            color: #6eb5d6;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-bottom: 1px solid rgba(74, 124, 158, 0.5);
+            padding-bottom: 10px;
+        }
+
+        .post {
+            background: rgba(30, 60, 80, 0.6);
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #6eb5d6;
+            border-radius: 4px;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 11px;
+        }
+
+        .username {
+            color: #6eb5d6;
+            font-weight: bold;
+        }
+
+        .timestamp {
+            color: #8eb3d0;
+        }
+
+        .post-content {
+            font-size: 13px;
+            line-height: 1.6;
+            color: #e8e8e8;
+        }
+
+        .post-content p {
+            margin-bottom: 8px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* CRT scan lines */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- WELCOME IMAGE -->
+        <div class="welcome-image">
+            <img src="./images/welcome-to-ekomere.png" alt="Welcome to Ekomere">
+        </div>
+
+        <!-- AUDIO PLAYER -->
+        <div class="album-player">
+            <div class="album-art">
+                <img src="./images/ekomere-album.png" alt="Ekomere Soundtrack">
+            </div>
+
+            <div class="now-playing">
+                <span class="track-title" id="trackTitle">Track 1: Welcome</span>
+                <span class="artist">Ekomere Soundtrack</span>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress" id="progress" style="width: 0%"></div>
+                <input type="range" id="progressSlider" min="0" max="100" value="0">
+            </div>
+
+            <div class="time-display">
+                <span id="currentTime">0:00</span> / <span id="duration">0:00</span>
+            </div>
+
+            <div class="controls">
+                <button class="control-btn" onclick="previousTrack()">◄ Prev</button>
+                <button class="control-btn" id="playBtn" onclick="togglePlay()">► Play</button>
+                <button class="control-btn" onclick="nextTrack()">Next ►</button>
+            </div>
+
+            <div class="volume-control">
+                <label>Volume:</label>
+                <input type="range" id="volumeSlider" min="0" max="100" value="70">
+            </div>
+        </div>
+
+        <!-- BBS CONTENT -->
+        <div class="bbs-container">
+            <div class="bbs-title">
+                <h1>EKOMERE</h1>
+                <p class="bbs-tagline">The Lake of Lost Wanderers - A place to rest. A place to remember.</p>
+            </div>
+
+            <!-- WELCOME HALL -->
+            <div class="bbs-section">
+                <div class="section-title">Welcome Hall</div>
+                
+                <div class="post">
+                    <div class="post-header">
+                        <span class="username">The Lake Keeper</span>
+                        <span class="timestamp">[SYSTEM]</span>
+                    </div>
+                    <div class="post-content">
+                        <p>Welcome, traveler. Your name here is safe. Your story here is heard. Rest as long as you need.</p>
+                    </div>
+                </div>
+
+                <div class="post">
+                    <div class="post-header">
+                        <span class="username">Kai_Wanderer</span>
+                        <span class="timestamp">Day 487</span>
+                    </div>
+                    <div class="post-content">
+                        <p>I don't know how long I've been here. But the water is warm. The people are kind. Maybe that's enough?</p>
+                    </div>
+                </div>
+
+                <div class="post">
+                    <div class="post-header">
+                        <span class="username">Lera_Hope</span>
+                        <span class="timestamp">Recent</span>
+                    </div>
+                    <div class="post-content">
+                        <p>I met someone today who said they came from a place called Andantis. They warned me about what comes next. I'm not sure if I want to leave.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- THE LAKE -->
+            <div class="bbs-section">
+                <div class="section-title">The Lake</div>
+
+                <div class="post">
+                    <div class="post-header">
+                        <span class="username">Echo_Archive</span>
+                        <span class="timestamp">[ARCHIVED - 1998]</span>
+                    </div>
+                    <div class="post-content">
+                        <p>If anyone from Magnetica reads this: Lazarus is lying. The efficiency he promises comes at a cost we can't measure.</p>
+                    </div>
+                </div>
+
+                <div class="post">
+                    <div class="post-header">
+                        <span class="username">Unknown</span>
+                        <span class="timestamp">Timeless</span>
+                    </div>
+                    <div class="post-content">
+                        <p>I sit by the water sometimes. It's the only thing that feels real.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CITY ARCHIVES -->
+            <div class="bbs-section">
+                <div class="section-title">⚠ City Archives [SPOILER WARNING]</div>
+
+                <div class="post">
+                    <div class="post-header">
+                        <span class="username">Archive Notice</span>
+                        <span class="timestamp">[SYSTEM]</span>
+                    </div>
+                    <div class="post-content">
+                        <p>Below are archived discussions about the Nine Cities. Reading may spoil your journey.</p>
+                        <p style="margin-top: 10px; opacity: 0.7;">Coming soon as you discover more cities...</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- AUDIO ELEMENT -->
+    <audio id="audioPlayer">
+        <source src="./audio/ekomere-full-album.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const albumData = {
+            tracks: [
+                { title: "Welcome", duration: 330 },
+                { title: "The Lake", duration: 420 },
+                { title: "Echoes", duration: 380 },
+                { title: "Rest", duration: 450 },
+                { title: "Departure", duration: 390 }
+            ]
+        };
+
+        let currentTrackIndex = 0;
+        let isPlaying = false;
+
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const trackTitle = document.getElementById('trackTitle');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const progressSlider = document.getElementById('progressSlider');
+        const volumeSlider = document.getElementById('volumeSlider');
+
+        function init() {
+            updateTrackDisplay();
+            volumeSlider.addEventListener('input', setVolume);
+            progressSlider.addEventListener('input', seek);
+            audio.addEventListener('timeupdate', updateProgress);
+            audio.addEventListener('ended', nextTrack);
+            audio.addEventListener('loadedmetadata', updateDuration);
+        }
+
+        function togglePlay() {
+            if (isPlaying) {
+                audio.pause();
+                playBtn.textContent = '► Play';
+            } else {
+                audio.play();
+                playBtn.textContent = '⏸ Pause';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % albumData.tracks.length;
+            updateTrackDisplay();
+            audio.currentTime = 0;
+            if (isPlaying) audio.play();
+        }
+
+        function previousTrack() {
+            currentTrackIndex = (currentTrackIndex - 1 + albumData.tracks.length) % albumData.tracks.length;
+            updateTrackDisplay();
+            audio.currentTime = 0;
+            if (isPlaying) audio.play();
+        }
+
+        function updateTrackDisplay() {
+            const track = albumData.tracks[currentTrackIndex];
+            trackTitle.textContent = `Track ${currentTrackIndex + 1}: ${track.title}`;
+        }
+
+        function updateProgress() {
+            const percent = (audio.currentTime / audio.duration) * 100;
+            progressSlider.value = percent;
+            document.getElementById('progress').style.width = percent + '%';
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+        }
+
+        function seek(e) {
+            const percent = e.target.value;
+            audio.currentTime = (percent / 100) * audio.duration;
+        }
+
+        function setVolume(e) {
+            audio.volume = e.target.value / 100;
+        }
+
+        function updateDuration() {
+            durationEl.textContent = formatTime(audio.duration);
+        }
+
+        function formatTime(seconds) {
+            if (!seconds || isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
