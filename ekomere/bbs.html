@@ -215,7 +215,7 @@
         <!-- AUDIO PLAYER -->
         <div class="audio-player">
             <div class="now-playing">
-                <span class="track-title" id="trackTitle">Track 1: Ether_1</span>
+                <span class="track-title" id="trackTitle">Track 1</span>
             </div>
 
             <div class="time-display">
@@ -316,90 +316,96 @@
     </div>
 
     <!-- AUDIO ELEMENT -->
-    <audio id="audioPlayer" autoplay loop>
-        <source src="./audio/Ether_1.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="audioPlayer" autoplay loop></audio>
 
-<script>
-    const tracks = [
-        'Ether_1', 'Ether_2', 'Ether_3', 'Ether_4', 'Ether_5',
-        'Ether_6', 'Ether_7', 'Ether_8', 'Ether_9', 'Ether_10'
-    ];
+    <script>
+        // Add your Cloudinary URLs here
+        const tracks = [
+            'https://res.cloudinary.com/dikna0ehp/video/upload/v1776480100/Ether_1_ipjv64.m4a',  // Track 1
+            'https://res.cloudinary.com/dikna0ehp/video/upload/v1776480048/Ether_2_ihluhy.m4a',  // Track 2
+            'https://res.cloudinary.com/dikna0ehp/video/upload/v1776480072/Ether_3_vqepca.m4a',  // Track 3
+            'https://res.cloudinary.com/dikna0ehp/video/upload/v1776480098/Ether_4_u6jovt.m4a',  // Track 4
+            'https://res.cloudinary.com/dikna0ehp/video/upload/v1776480104/Ether_5_ywuwpb.m4a',  // Track 5
+            'https://res.cloudinary.com/dikna0ehp/video/upload/v1776480072/Ether_6_czlic1.m4a',  // Track 6
+            'https://res.cloudinary.com/dikna0ehp/video/upload/v1776480106/Ether_7_tlhekl.m4a',  // Track 7
+            'https://res.cloudinary.com/dikna0ehp/video/upload/v1776480070/Ether_8_lnhodr.m4a',  // Track 8
+            'https://res.cloudinary.com/dikna0ehp/video/upload/v1776480054/Ether_9_h8akt7.m4a',  // Track 9
+            'https://res.cloudinary.com/dikna0ehp/video/upload/v1776480060/Ether_10_wwyhlw.m4a' // Track 10
+        ];
 
-    let currentTrackIndex = 0;
-    let isPlaying = true;
+        let currentTrackIndex = 0;
+        let isPlaying = true;
 
-    const audio = document.getElementById('audioPlayer');
-    const playBtn = document.getElementById('playBtn');
-    const trackTitle = document.getElementById('trackTitle');
-    const currentTimeEl = document.getElementById('currentTime');
-    const durationEl = document.getElementById('duration');
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const trackTitle = document.getElementById('trackTitle');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
 
-    function init() {
-        updateTrackDisplay();
-        loadTrack();
-        
-        audio.addEventListener('timeupdate', updateProgress);
-        audio.addEventListener('ended', nextTrack);
-        audio.addEventListener('loadedmetadata', updateDuration);
-        audio.addEventListener('error', function(e) {
-            console.error('Audio load error:', e);
-        });
-        
-        playBtn.textContent = '⏸ Pause';
-    }
-
-    function loadTrack() {
-        const trackName = tracks[currentTrackIndex];
-        audio.src = `./audio/${trackName}.mp3`;
-        console.log('Loading track:', `./audio/${trackName}.mp3`);
-    }
-
-    function togglePlay() {
-        if (isPlaying) {
-            audio.pause();
-            playBtn.textContent = '► Play';
-        } else {
-            audio.play();
+        function init() {
+            updateTrackDisplay();
+            loadTrack();
+            
+            audio.addEventListener('timeupdate', updateProgress);
+            audio.addEventListener('ended', nextTrack);
+            audio.addEventListener('loadedmetadata', updateDuration);
+            audio.addEventListener('error', function(e) {
+                console.error('Audio load error:', e);
+            });
+            
             playBtn.textContent = '⏸ Pause';
         }
-        isPlaying = !isPlaying;
-    }
 
-    function nextTrack() {
-        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-        updateTrackDisplay();
-        loadTrack();
-        audio.play();
-    }
+        function loadTrack() {
+            audio.src = tracks[currentTrackIndex];
+            console.log('Loading:', tracks[currentTrackIndex]);
+        }
 
-    function previousTrack() {
-        currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-        updateTrackDisplay();
-        loadTrack();
-        audio.play();
-    }
+        function togglePlay() {
+            if (isPlaying) {
+                audio.pause();
+                playBtn.textContent = '► Play';
+            } else {
+                audio.play();
+                playBtn.textContent = '⏸ Pause';
+            }
+            isPlaying = !isPlaying;
+        }
 
-    function updateTrackDisplay() {
-        trackTitle.textContent = `Track ${currentTrackIndex + 1}: ${tracks[currentTrackIndex]}`;
-    }
+        function nextTrack() {
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+            updateTrackDisplay();
+            loadTrack();
+            audio.play();
+        }
 
-    function updateProgress() {
-        currentTimeEl.textContent = formatTime(audio.currentTime);
-    }
+        function previousTrack() {
+            currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+            updateTrackDisplay();
+            loadTrack();
+            audio.play();
+        }
 
-    function updateDuration() {
-        durationEl.textContent = formatTime(audio.duration);
-    }
+        function updateTrackDisplay() {
+            trackTitle.textContent = `Track ${currentTrackIndex + 1}`;
+        }
 
-    function formatTime(seconds) {
-        if (!seconds || isNaN(seconds)) return '0:00';
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60);
-        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-    }
+        function updateProgress() {
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+        }
 
-    document.addEventListener('DOMContentLoaded', init);
-</script>
+        function updateDuration() {
+            durationEl.textContent = formatTime(audio.duration);
+        }
+
+        function formatTime(seconds) {
+            if (!seconds || isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
 </body>
 </html>
