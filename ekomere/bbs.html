@@ -13,7 +13,7 @@
         }
 
         body {
-            background: linear-gradient(135deg, #1a4d6d 0%, #2d5a6f 100%);
+            background: #000;
             color: #e8e8e8;
             font-family: 'VT323', monospace;
             padding: 40px 20px;
@@ -29,7 +29,7 @@
         .welcome-image {
             width: 100%;
             margin-bottom: 30px;
-            border: 2px solid #4a7c9e;
+            border: 2px solid #fff;
             border-radius: 4px;
             overflow: hidden;
             animation: fadeIn 0.8s ease-in;
@@ -42,78 +42,30 @@
         }
 
         /* AUDIO PLAYER */
-        .album-player {
-            background: rgba(20, 40, 60, 0.8);
-            border: 2px solid #4a7c9e;
+        .audio-player {
+            background: rgba(20, 20, 20, 0.8);
+            border: 2px solid #fff;
             border-radius: 8px;
-            padding: 30px;
+            padding: 20px;
             margin-bottom: 40px;
             text-align: center;
         }
 
-        .album-art {
-            margin-bottom: 20px;
-        }
-
-        .album-art img {
-            width: 100%;
-            max-width: 250px;
-            border: 3px solid #6eb5d6;
-            border-radius: 4px;
-            box-shadow: 0 0 20px rgba(110, 181, 214, 0.3);
-        }
-
         .now-playing {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .track-title {
             display: block;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             color: #e8e8e8;
-            margin-bottom: 5px;
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-        }
-
-        .artist {
-            display: block;
-            font-size: 11px;
-            color: #8eb3d0;
-        }
-
-        .progress-bar {
-            position: relative;
-            width: 100%;
-            height: 6px;
-            background: rgba(70, 120, 150, 0.5);
-            border-radius: 3px;
-            margin: 15px 0;
-            overflow: hidden;
-            cursor: pointer;
-        }
-
-        .progress {
-            height: 100%;
-            background: linear-gradient(90deg, #6eb5d6, #4a9cc9);
-            width: 0%;
-            transition: width 0.1s linear;
-        }
-
-        #progressSlider {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-            z-index: 10;
         }
 
         .time-display {
             font-size: 11px;
-            color: #8eb3d0;
+            color: #aaa;
             margin: 10px 0;
         }
 
@@ -125,8 +77,8 @@
         }
 
         .control-btn {
-            background: rgba(74, 124, 158, 0.6);
-            border: 2px solid #6eb5d6;
+            background: #000;
+            border: 2px solid #fff;
             color: #e8e8e8;
             padding: 10px 20px;
             font-family: 'VT323', monospace;
@@ -138,37 +90,19 @@
         }
 
         .control-btn:hover {
-            background: #6eb5d6;
+            background: #fff;
             color: #000;
-            box-shadow: 0 0 15px rgba(110, 181, 214, 0.5);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
         }
 
         .control-btn:active {
             transform: scale(0.95);
         }
 
-        .volume-control {
-            margin-top: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .volume-control label {
-            font-size: 11px;
-            color: #8eb3d0;
-        }
-
-        .volume-control input {
-            width: 100px;
-            cursor: pointer;
-        }
-
         /* BBS CONTENT */
         .bbs-container {
-            background: rgba(20, 40, 60, 0.8);
-            border: 2px solid #4a7c9e;
+            background: #000;
+            border: 2px solid #fff;
             border-radius: 8px;
             padding: 30px;
         }
@@ -177,7 +111,7 @@
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 20px;
-            border-bottom: 2px solid #4a7c9e;
+            border-bottom: 2px solid #fff;
         }
 
         .bbs-title h1 {
@@ -188,7 +122,7 @@
 
         .bbs-tagline {
             font-style: italic;
-            color: #8eb3d0;
+            color: #aaa;
             font-size: 12px;
         }
 
@@ -198,19 +132,19 @@
 
         .section-title {
             font-size: 14px;
-            color: #6eb5d6;
+            color: #e8e8e8;
             margin-bottom: 15px;
             letter-spacing: 1px;
             text-transform: uppercase;
-            border-bottom: 1px solid rgba(74, 124, 158, 0.5);
+            border-bottom: 1px solid #444;
             padding-bottom: 10px;
         }
 
         .post {
-            background: rgba(30, 60, 80, 0.6);
+            background: #111;
             padding: 15px;
             margin-bottom: 15px;
-            border-left: 4px solid #6eb5d6;
+            border-left: 4px solid #fff;
             border-radius: 4px;
         }
 
@@ -222,12 +156,12 @@
         }
 
         .username {
-            color: #6eb5d6;
+            color: #e8e8e8;
             font-weight: bold;
         }
 
         .timestamp {
-            color: #8eb3d0;
+            color: #aaa;
         }
 
         .post-content {
@@ -279,19 +213,9 @@
         </div>
 
         <!-- AUDIO PLAYER -->
-        <div class="album-player">
-            <div class="album-art">
-                <img src="./images/ekomere-album.png" alt="Ekomere Soundtrack">
-            </div>
-
+        <div class="audio-player">
             <div class="now-playing">
-                <span class="track-title" id="trackTitle">Track 1: Welcome</span>
-                <span class="artist">Ekomere Soundtrack</span>
-            </div>
-
-            <div class="progress-bar">
-                <div class="progress" id="progress" style="width: 0%"></div>
-                <input type="range" id="progressSlider" min="0" max="100" value="0">
+                <span class="track-title" id="trackTitle">Track 1: Ether_1</span>
             </div>
 
             <div class="time-display">
@@ -302,11 +226,6 @@
                 <button class="control-btn" onclick="previousTrack()">◄ Prev</button>
                 <button class="control-btn" id="playBtn" onclick="togglePlay()">► Play</button>
                 <button class="control-btn" onclick="nextTrack()">Next ►</button>
-            </div>
-
-            <div class="volume-control">
-                <label>Volume:</label>
-                <input type="range" id="volumeSlider" min="0" max="100" value="70">
             </div>
         </div>
 
@@ -397,39 +316,31 @@
     </div>
 
     <!-- AUDIO ELEMENT -->
-    <audio id="audioPlayer">
-        <source src="./audio/ekomere-full-album.mp3" type="audio/mpeg">
+    <audio id="audioPlayer" autoplay loop>
+        <source src="./audio/Ether_1.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        const albumData = {
-            tracks: [
-                { title: "Welcome", duration: 330 },
-                { title: "The Lake", duration: 420 },
-                { title: "Echoes", duration: 380 },
-                { title: "Rest", duration: 450 },
-                { title: "Departure", duration: 390 }
-            ]
-        };
+        const tracks = [
+            'Ether_1', 'Ether_2', 'Ether_3', 'Ether_4', 'Ether_5',
+            'Ether_6', 'Ether_7', 'Ether_8', 'Ether_9', 'Ether_10'
+        ];
 
         let currentTrackIndex = 0;
-        let isPlaying = false;
+        let isPlaying = true;
 
         const audio = document.getElementById('audioPlayer');
         const playBtn = document.getElementById('playBtn');
         const trackTitle = document.getElementById('trackTitle');
         const currentTimeEl = document.getElementById('currentTime');
         const durationEl = document.getElementById('duration');
-        const progressSlider = document.getElementById('progressSlider');
-        const volumeSlider = document.getElementById('volumeSlider');
 
         function init() {
             updateTrackDisplay();
-            volumeSlider.addEventListener('input', setVolume);
-            progressSlider.addEventListener('input', seek);
             audio.addEventListener('timeupdate', updateProgress);
             audio.addEventListener('ended', nextTrack);
             audio.addEventListener('loadedmetadata', updateDuration);
+            playBtn.textContent = '⏸ Pause';
         }
 
         function togglePlay() {
@@ -444,38 +355,25 @@
         }
 
         function nextTrack() {
-            currentTrackIndex = (currentTrackIndex + 1) % albumData.tracks.length;
+            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
             updateTrackDisplay();
-            audio.currentTime = 0;
-            if (isPlaying) audio.play();
+            audio.src = `./audio/${tracks[currentTrackIndex]}.mp3`;
+            audio.play();
         }
 
         function previousTrack() {
-            currentTrackIndex = (currentTrackIndex - 1 + albumData.tracks.length) % albumData.tracks.length;
+            currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
             updateTrackDisplay();
-            audio.currentTime = 0;
-            if (isPlaying) audio.play();
+            audio.src = `./audio/${tracks[currentTrackIndex]}.mp3`;
+            audio.play();
         }
 
         function updateTrackDisplay() {
-            const track = albumData.tracks[currentTrackIndex];
-            trackTitle.textContent = `Track ${currentTrackIndex + 1}: ${track.title}`;
+            trackTitle.textContent = `Track ${currentTrackIndex + 1}: ${tracks[currentTrackIndex]}`;
         }
 
         function updateProgress() {
-            const percent = (audio.currentTime / audio.duration) * 100;
-            progressSlider.value = percent;
-            document.getElementById('progress').style.width = percent + '%';
             currentTimeEl.textContent = formatTime(audio.currentTime);
-        }
-
-        function seek(e) {
-            const percent = e.target.value;
-            audio.currentTime = (percent / 100) * audio.duration;
-        }
-
-        function setVolume(e) {
-            audio.volume = e.target.value / 100;
         }
 
         function updateDuration() {
