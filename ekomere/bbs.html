@@ -333,79 +333,79 @@
             'https://res.cloudinary.com/dikna0ehp/video/upload/v1776480060/Ether_10_wwyhlw.m4a' // Track 10
         ];
 
-        let currentTrackIndex = 0;
-        let isPlaying = true;
+    let currentTrackIndex = 0;
+    let isPlaying = true;
 
-        const audio = document.getElementById('audioPlayer');
-        const playBtn = document.getElementById('playBtn');
-        const trackTitle = document.getElementById('trackTitle');
-        const currentTimeEl = document.getElementById('currentTime');
-        const durationEl = document.getElementById('duration');
+    const audio = document.getElementById('audioPlayer');
+    const playBtn = document.getElementById('playBtn');
+    const trackTitle = document.getElementById('trackTitle');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationEl = document.getElementById('duration');
 
-        function init() {
-            updateTrackDisplay();
-            loadTrack();
-            
-            audio.addEventListener('timeupdate', updateProgress);
-            audio.addEventListener('ended', nextTrack);
-            audio.addEventListener('loadedmetadata', updateDuration);
-            audio.addEventListener('error', function(e) {
-                console.error('Audio load error:', e);
-            });
-            
+    function init() {
+        updateTrackDisplay();
+        loadTrack();
+        
+        audio.addEventListener('timeupdate', updateProgress);
+        audio.addEventListener('ended', nextTrack);
+        audio.addEventListener('loadedmetadata', updateDuration);
+        audio.addEventListener('error', function(e) {
+            console.error('Audio load error:', e);
+        });
+        
+        playBtn.textContent = '⏸ Pause';
+    }
+
+    function loadTrack() {
+        audio.src = tracks[currentTrackIndex];
+        console.log('Loading:', tracks[currentTrackIndex]);
+    }
+
+    function togglePlay() {
+        if (isPlaying) {
+            audio.pause();
+            playBtn.textContent = '► Play';
+        } else {
+            audio.play();
             playBtn.textContent = '⏸ Pause';
         }
+        isPlaying = !isPlaying;
+    }
 
-        function loadTrack() {
-            audio.src = tracks[currentTrackIndex];
-            console.log('Loading:', tracks[currentTrackIndex]);
-        }
+    function nextTrack() {
+        currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+        updateTrackDisplay();
+        loadTrack();
+        audio.play();
+    }
 
-        function togglePlay() {
-            if (isPlaying) {
-                audio.pause();
-                playBtn.textContent = '► Play';
-            } else {
-                audio.play();
-                playBtn.textContent = '⏸ Pause';
-            }
-            isPlaying = !isPlaying;
-        }
+    function previousTrack() {
+        currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+        updateTrackDisplay();
+        loadTrack();
+        audio.play();
+    }
 
-        function nextTrack() {
-            currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
-            updateTrackDisplay();
-            loadTrack();
-            audio.play();
-        }
+    function updateTrackDisplay() {
+        trackTitle.textContent = `Track ${currentTrackIndex + 1}`;
+    }
 
-        function previousTrack() {
-            currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
-            updateTrackDisplay();
-            loadTrack();
-            audio.play();
-        }
+    function updateProgress() {
+        currentTimeEl.textContent = formatTime(audio.currentTime);
+    }
 
-        function updateTrackDisplay() {
-            trackTitle.textContent = `Track ${currentTrackIndex + 1}`;
-        }
+    function updateDuration() {
+        durationEl.textContent = formatTime(audio.duration);
+    }
 
-        function updateProgress() {
-            currentTimeEl.textContent = formatTime(audio.currentTime);
-        }
+    function formatTime(seconds) {
+        if (!seconds || isNaN(seconds)) return '0:00';
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+    }
 
-        function updateDuration() {
-            durationEl.textContent = formatTime(audio.duration);
-        }
-
-        function formatTime(seconds) {
-            if (!seconds || isNaN(seconds)) return '0:00';
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60);
-            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-
-        document.addEventListener('DOMContentLoaded', init);
-    </script>
+    document.addEventListener('DOMContentLoaded', init);
+</script>
 </body>
 </html>
